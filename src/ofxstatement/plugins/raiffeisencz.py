@@ -50,7 +50,8 @@ class RaiffeisenCZParser(CsvStatementParser):
             self.mappings = {
                 "date":      self.columns['Datum zaúčtování'],
                 "date_user": self.columns['Datum provedení'],
-                "memo":      self.columns['Poznámka'],
+                #"memo":      self.columns['Poznámka'],
+                "memo":      self.columns['Zpráva'],
                 "payee":     self.columns['Název protiúčtu'],
                 "amount":    self.columns['Zaúčtovaná částka'],
                 "check_no":  self.columns['VS'],
@@ -123,6 +124,8 @@ class RaiffeisenCZParser(CsvStatementParser):
             StatementLine.payee = StatementLine.payee + "|ÚČ: " + line[columns["Číslo protiúčtu"]]
 
         # Add payment symbols to memo field
+        if line[columns["Poznámka"]] != "":
+            StatementLine.memo = StatementLine.memo + "|Pznka: " + line[columns["Poznámka"]]
         if line[columns["VS"]] != "":
             StatementLine.memo = StatementLine.memo + "|VS: " + line[columns["VS"]]
         if line[columns["KS"]] != "":
